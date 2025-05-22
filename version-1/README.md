@@ -1,3 +1,7 @@
+style project by placing data in correct groups...parents and children. 
+
+
+
 # Countries API Application - Version 1
 
 ## 👋 Welcome!
@@ -8,13 +12,13 @@ Your challenge is to build a website with React.js that pulls country data from 
 
 In Version 1, you'll build a mobile-responsive React app that:
 
-- Displays country data from the [REST Countries API](https://restcountries.com), or from `localData.js` file as a backup when the API is down
+- [x]Displays country data from the [REST Countries API](https://restcountries.com), or from `localData.js` file as a backup when the API is down
 - Is styled according to provided Figma designs
-- Uses `react-router` to navigate between pages
-- Includes: Home, SavedCountries, and CountryDetail pages
+- [x]Uses `react-router` to navigate between pages
+- [x]Includes: Home, SavedCountries, and CountryDetail pages
 - Deployed to a Netlify URL
-- As a user, I can see all countries on the Home page, with data displayed about each country
-- As a user, I can submit a form with my profile information on the Saved Countries page 
+- [x]As a user, I can see all countries on the Home page, with data displayed about each country
+- [x]As a user, I can submit a form with my profile information on the Saved Countries page 
 - As a user, I can click on a country to see more detailed information on a separate page 
 
 Stretch goals for the project (not required)
