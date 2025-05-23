@@ -4,6 +4,7 @@ import localData from "../../localData";
 import { useState } from "react";
 
 function CountryCard() {
+  const [localData, setLocalData] useState=[""];
   return (
     <>
     

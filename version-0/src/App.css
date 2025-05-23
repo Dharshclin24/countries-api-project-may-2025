@@ -33,9 +33,10 @@
   }
 }
 
-.card {
+ .card{
   padding: 2em;
-  border: #61dafbaa;
+  border: black solid;
+  flex: auto;
 }
 
 .read-the-docs {

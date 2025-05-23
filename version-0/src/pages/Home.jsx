@@ -17,11 +17,16 @@ function Home() {
           //console log to insure data accuracy
           return (
             //div to categorize list items(helps with styling) gave key the value of index
-            <div key={index} className="card">
+            <div key={index} id="card">
               {/* list items to retrieve specific data from item...name population capital, region and flags(images)  */}
               <ul>
                 {/* id tags to style the parts of the cards */}
-                <img src={item.flags.png} alt="country flags" width="500" id="imgCard"></img>
+                <img
+                  src={item.flags.png}
+                  alt="country flags"
+                  width="500"
+                  id="imgCard"
+                ></img>
                 <li id="nameCard">{item.name.common}</li>
                 <li id="popCard">{item.population}</li>
                 <li id="regionCard">{item.region}</li>
