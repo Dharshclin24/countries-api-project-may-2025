@@ -1,3 +1,12 @@
+body {
+  background-color: #282c34;
+  color: white;
+  padding: 40px;
+  font-family: Sans-Serif;
+  text-align: center;
+  background-color: aqua;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -33,10 +42,12 @@
   }
 }
 
- .card{
+.container {
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 2em;
   border: black solid;
-  flex: auto;
+  flex-flow: column;
 }
 
 .read-the-docs {

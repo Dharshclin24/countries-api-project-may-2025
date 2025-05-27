@@ -9,7 +9,7 @@ function Home({ data }) {
 
   return (
     <>
-      <div>
+      <div id="linksCard">
         <h1>Welcome to the Home Page</h1>
         {data?.map((item, index) => {
           //looped to map over and collected data. Item is the value of localData.

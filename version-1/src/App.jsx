@@ -30,17 +30,26 @@ export default function App() {
   }, []);
 
   return (
-    <div>
+    <div id="topNav">
       <nav>
         <ul>
           <li>
             <h1>Saved Countries</h1>
-            <Link to="/">Home</Link>
-            <Link to="/savedCountries">SavedCountries</Link>
-            <Link to="/countrydetails">CountryDetails</Link>
+            <button id="homebutt">
+              <Link to="/">Home</Link>
+            </button>
+            <button id="savedbutt">
+              {" "}
+              <Link to="/savedCountries">SavedCountries</Link>
+            </button>
+
+            <button id="countrybutt">
+              <Link to="/countrydetails">CountryDetails</Link>
+            </button>
           </li>
         </ul>
       </nav>
+
       <Routes>
         <Route path="/" element={<Home data={gatheredApiInfo} />} />
         <Route

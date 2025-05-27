@@ -12,5 +12,5 @@ export default function SavedCountries() {
   const root = ReactDOM.createRoot(document.getElementById("root"));
   root.render(<MyForm />);
 
-  return <h1>Welcome to the Saved Countries Page</h1>;
+  return <h1 className="title">Welcome to the Saved Countries Page</h1>;
 }

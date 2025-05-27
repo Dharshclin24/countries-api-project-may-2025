@@ -17,8 +17,9 @@ function Home() {
           //console log to insure data accuracy
           return (
             //div to categorize list items(helps with styling) gave key the value of index
-            <div key={index} id="card">
+            <div key={index}>
               {/* list items to retrieve specific data from item...name population capital, region and flags(images)  */}
+              <div id="container" >
               <ul>
                 {/* id tags to style the parts of the cards */}
                 <img
@@ -32,6 +33,7 @@ function Home() {
                 <li id="regionCard">{item.region}</li>
                 <li id="capDard">{item.capital}</li>
               </ul>
+              </div>
             </div>
           );
         })}
