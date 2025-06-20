@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+//import "../App.css";
+import { Link } from "react-router-dom";
 
 function CountryDetails({ data }) {
   const countryName = useParams().country;
@@ -58,6 +60,7 @@ function CountryDetails({ data }) {
   return (
     <>
       <div>
+      <Link to="/">
         <nav>
           <h1>Welcome to the CountryDetails page</h1>
           <h2>Viewed {count}</h2>
@@ -80,6 +83,7 @@ function CountryDetails({ data }) {
             </ul>
           )}
         </nav>
+        </Link>
       </div>
     </>
   );

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import React from "react"
+//import CountryCard from "../components/CountryCard";
 
 function SavedCountries({ data }) {
   const [inputs, setInputs] = useState(null);
