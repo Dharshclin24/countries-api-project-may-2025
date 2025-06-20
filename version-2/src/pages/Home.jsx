@@ -1,4 +1,3 @@
-
 //imported in data from the local data file
 import { Link } from "react-router";
 import localData from "../../localData";
@@ -7,8 +6,6 @@ function Home({ data }) {
   //console.log to insure accurate data
   console.log(localData);
   console.log(localData[1].name.common);
-  
-
 
   return (
     <>
@@ -45,7 +42,6 @@ function Home({ data }) {
                     <li id="capDard">
                       <strong>Capital</strong> {item.capital}
                     </li>
-                  
                   </ul>
                 </nav>
               </div>
