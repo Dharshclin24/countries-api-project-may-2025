@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import React from "react"
+import React from "react";
 //import CountryCard from "../components/CountryCard";
 
 function SavedCountries({ data }) {
@@ -67,7 +67,7 @@ function SavedCountries({ data }) {
 
   //post request created to store data when user saves a country.
   async function oneSavedCountry() {
-    await fetch("/api/save-one-country", {
+    await fetch("/api/save-one-country  ", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ function SavedCountries({ data }) {
       const response = await fetch(`api/get-all-saved-countries`);
       //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
       const data = await response.json();
-      // console.log(data, "data from get new country");
+       console.log(data, "data from get new country");
       // console.log(data[1].country_name, "new country name");
 
       setStoredCountryData(data[1].country_name);
@@ -102,12 +102,11 @@ function SavedCountries({ data }) {
   let retrievedCountryData;
   if (data) {
     retrievedCountryData = data.find((item) => {
-      //console.log(item, "looking for item");
-      console.log(retrievedCountryData, "label for retrievedcountryData info");
-      console.log(retrievedCountryData, "recieved data label");
+      console.log(item, "looking for item");
+      //console.log(retrievedCountryData, "label for retrievedcountryData info");
 
       if (setStoredCountryData === data[1].country_name) return true;
-      //console.log(setStoredCountryData, "Where is the country name");
+      console.log(setStoredCountryData, "Where is the country name");
     });
   }
 
@@ -116,6 +115,7 @@ function SavedCountries({ data }) {
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
       <p>Saved Countries {storedCountryData}</p>
+      <button onclick={allSavedCountries}>Try it</button>
 
       <form onSubmit={handleSubmit}>
         <div id="container">

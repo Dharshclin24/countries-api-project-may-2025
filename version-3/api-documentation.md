@@ -2,18 +2,16 @@
 
 Base URL: `https://backend-answer-keys.onrender.com`
 
-
 ## Overview
 
-| Resource         | Method | Endpoint                   | Description                                           |
-|------------------|--------|----------------------------|-------------------------------------------------------|
-| `users`          | GET    | /get-newest-user           | Retrieves the most recently added user.              |
-| `users`          | GET    | /get-all-users             | Retrieves all users from the database.               |
-| `users`          | POST   | /add-one-user              | Adds a new user to the database.                     |
-| `country_counts` | POST   | /update-one-country-count | Updates (or initializes) the view count of a country.|
-| `saved_countries`| GET    | /get-all-saved-countries   | Retrieves a list of all saved countries.             |
-| `saved_countries`| POST   | /save-one-country          | Saves a country if it hasn’t already been saved.     |
-
+| Resource          | Method | Endpoint                  | Description                                           |
+| ----------------- | ------ | ------------------------- | ----------------------------------------------------- |
+| `users`           | GET    | /get-newest-user          | Retrieves the most recently added user.               |
+| `users`           | GET    | /get-all-users            | Retrieves all users from the database.                |
+| `users`           | POST   | /add-one-user             | Adds a new user to the database.                      |
+| `country_counts`  | POST   | /update-one-country-count | Updates (or initializes) the view count of a country. |
+| `saved_countries` | GET    | /get-all-saved-countries  | Retrieves a list of all saved countries.              |
+| `saved_countries` | POST   | /save-one-country         | Saves a country if it hasn’t already been saved.      |
 
 ## Users
 
@@ -60,7 +58,7 @@ Base URL: `https://backend-answer-keys.onrender.com`
     "country_name": "Australia",
     "email": "paul@example.com",
     "bio": "Short bio here"
-  },
+  }
 ]
 ```
 

@@ -17,7 +17,7 @@ function CountryDetails({ data }) {
         },
         //body of request count data to get the country name and json the data.
         body: JSON.stringify({
-          country_name: countryName,
+          country_name: "countryName",
         }),
       });
       if (!response.ok) {
@@ -57,32 +57,35 @@ function CountryDetails({ data }) {
     return <div>Loading country details... or Country not found.</div>;
   }
 
+  // </script>
+
   return (
     <>
       <div>
-      <Link to="/">
-        <nav>
-          <h1>Welcome to the CountryDetails page</h1>
-          <h2>Viewed {count}</h2>
-          {found && (
-            <ul>
-              <img src={found.flags.png} alt="country flags" id="imgCard" />
+        <Link to="/">
+          <nav>
+            <h1>Welcome to the CountryDetails page</h1>
 
-              <li id="nameCard2">
-                <strong>Name</strong> {found.name.common}
-              </li>
-              <li id="popCard2">
-                <strong>Poulation</strong> {found.population}
-              </li>
-              <li id="regionCard2">
-                <strong>Region</strong> {found.region}
-              </li>
-              <li id="capDard2">
-                <strong>Capital</strong> {found.capital}
-              </li>
-            </ul>
-          )}
-        </nav>
+            <button onclick={count}>Saved countries</button>
+            {found && (
+              <ul>
+                <img src={found.flags.png} alt="country flags" id="imgCard" />
+
+                <li id="nameCard2">
+                  <strong>Name</strong> {found.name.common}
+                </li>
+                <li id="popCard2">
+                  <strong>Poulation</strong> {found.population}
+                </li>
+                <li id="regionCard2">
+                  <strong>Region</strong> {found.region}
+                </li>
+                <li id="capDard2">
+                  <strong>Capital</strong> {found.capital}
+                </li>
+              </ul>
+            )}
+          </nav>
         </Link>
       </div>
     </>
