@@ -25,7 +25,7 @@ function CountryDetails({ data }) {
         //if no response throw an error
       }
       const countryData = await response.json();
-      //console.log(countryData, "country data label");
+      console.log(countryData, "country data label");
       //created to change the information that was gathered from the response of the api to json.
       setCount(countryData.newCount);
       //created to give the setCount function the value of countryData and new count
@@ -43,7 +43,7 @@ function CountryDetails({ data }) {
   let found;
   if (data) {
     found = data.find((item) => {
-      //console.log(item, "looking for item");
+      console.log(item, "looking for item");
       console.log(found, "label for found info");
 
       if (countryName === item.common) return true;
