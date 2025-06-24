@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function CountryDetails({ data }) {
-  const countryName = useParams().country;
+  const countryName = useParams().countryName;
   const [count, setCount] = useState(0);
   //function created to update the count of viewed  countries  when the user views a country.
   //fetch created to gather viewed country data from the api.
@@ -25,7 +25,7 @@ function CountryDetails({ data }) {
         //if no response throw an error
       }
       const countryData = await response.json();
-      console.log(countryData, "country data label");
+      //console.log(countryData, "country data label");
       //created to change the information that was gathered from the response of the api to json.
       setCount(countryData.newCount);
       //created to give the setCount function the value of countryData and new count
@@ -43,10 +43,13 @@ function CountryDetails({ data }) {
   let found;
   if (data) {
     found = data.find((item) => {
-      console.log(item, "looking for item");
-      console.log(found, "label for found info");
+      //console.log(item, "looking for item");
+      //console.log(found, "label for found info");
+      console.log(countryName, "country name label");
+      //console.log(item.name.common, "item name label");
 
-      if (countryName === item.common) return true;
+      if (countryName === item.name.common) return true;
+
       //console.log(countryName, "Where is the country name")
     });
   }
