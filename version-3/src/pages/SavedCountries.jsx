@@ -3,17 +3,21 @@ import React from "react";
 //import CountryCard from "../components/CountryCard";
 
 function SavedCountries({ data }) {
-  const [inputs, setInputs] = useState(null);
+  const [inputs, setInputs] = useState({
+    username: "",
+    country: "",
+    email: "",
+    bio: "",
+  });
   const [gottenInfo, setGottenInfo] = useState(null);
-  const [storedCountryData, setStoredCountryData] = useState(null);
+  const [savedCountriesList, setSavedCountriesList] = useState([]);
 
   //global variable declared to store (set mode function)and display data (render in jsx.not set variable)from the api
 
   // //function defined to handle changes made to the form when user inputs data.
   const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
+    const { name, value } = event.target;
+    setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   };
 
   // //post request created to send the form data to the API.
@@ -31,8 +35,10 @@ function SavedCountries({ data }) {
         bio: inputs.bio,
       }),
     });
+    
   }
-  const retrievedFormData = async () => {
+  const retrievedFormData = 
+  async () => {
     try {
       const response = await fetch(`/api/get-newest-user`);
       //created  a fetch to get the newest user information.Named the function retrieved form data
@@ -65,19 +71,7 @@ function SavedCountries({ data }) {
     storeData();
   };
 
-  //post request created to store data when user saves a country.
-  async function oneSavedCountry() {
-    await fetch("/api/save-one-country  ", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      //request body
-      body: JSON.stringify({
-        country_name: "",
-      }),
-    });
-  }
+ 
 
   //get request created to retrieve a list of all saved countries.
 
@@ -86,8 +80,8 @@ function SavedCountries({ data }) {
       const response = await fetch(`api/get-all-saved-countries`);
       //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
       const data = await response.json();
-       console.log(data, "data from get new country");
-      // console.log(data[1].country_name, "new country name");
+      console.log(data, "data from get new country");
+      
 
       setStoredCountryData(data[1].country_name);
       // console.log(setStoredCountryData, "storedCountryDataLabel");
@@ -115,9 +109,9 @@ function SavedCountries({ data }) {
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
       <p>Saved Countries {storedCountryData}</p>
-      <button onclick={allSavedCountries}>Try it</button>
 
       <form onSubmit={handleSubmit}>
+        
         <div id="container">
           <nav>
             <label>

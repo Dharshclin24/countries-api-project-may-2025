@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //import "../App.css";
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ function CountryDetails({ data }) {
         },
         //body of request count data to get the country name and json the data.
         body: JSON.stringify({
-          country_name: "countryName",
+          country_name: countryName,
         }),
       });
       if (!response.ok) {
@@ -57,7 +57,21 @@ function CountryDetails({ data }) {
   //console.log(data);
   //console.log(found, "looking for found");
   if (!found) {
-    return <div>Loading country details... or Country not found.</div>;
+    return <div>Loading country details...</div>;
+  }
+  
+  //post request created to store data when user saves a country.
+  async function oneSavedCountry() {
+    await fetch("/api/save-one-country  ", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      //request body
+      body: JSON.stringify({
+        country_name: countryName,
+      }),
+    });
   }
 
   // </script>
@@ -69,7 +83,7 @@ function CountryDetails({ data }) {
           <nav>
             <h1>Welcome to the CountryDetails page</h1>
 
-            <button onclick={count}>Saved countries</button>
+            <button onClick={oneSavedCountry}>Saved countries</button>
             {found && (
               <ul>
                 <img src={found.flags.png} alt="country flags" id="imgCard" />

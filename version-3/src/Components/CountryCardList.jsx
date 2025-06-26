@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import CountryCard from "./CountryCard";
+//import CountryCard from "./CountryCard";
 import { Link } from "react-router-dom";
 
 export default function CountryCardList({ data }) {
