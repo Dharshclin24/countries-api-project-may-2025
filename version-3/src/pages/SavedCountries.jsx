@@ -35,10 +35,8 @@ function SavedCountries({ data }) {
         bio: inputs.bio,
       }),
     });
-    
   }
-  const retrievedFormData = 
-  async () => {
+  const retrievedFormData = async () => {
     try {
       const response = await fetch(`/api/get-newest-user`);
       //created  a fetch to get the newest user information.Named the function retrieved form data
@@ -71,8 +69,6 @@ function SavedCountries({ data }) {
     storeData();
   };
 
- 
-
   //get request created to retrieve a list of all saved countries.
 
   const allSavedCountries = async () => {
@@ -81,9 +77,8 @@ function SavedCountries({ data }) {
       //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
       const data = await response.json();
       console.log(data, "data from get new country");
-      
 
-      setStoredCountryData(data[1].country_name);
+      setSavedCountriesList(data);
       // console.log(setStoredCountryData, "storedCountryDataLabel");
     } catch (error) {
       console.error("Oopsies! Error fetching data:", error);
@@ -94,15 +89,15 @@ function SavedCountries({ data }) {
     allSavedCountries();
   }, []);
   let retrievedCountryData;
-  if (data) {
-    retrievedCountryData = data.find((item) => {
-      console.log(item, "looking for item");
-      //console.log(retrievedCountryData, "label for retrievedcountryData info");
+  // if (data) {
+  //   retrievedCountryData = data.find((item) => {
+  //     console.log(item, "looking for item");
+  //     //console.log(retrievedCountryData, "label for retrievedcountryData info");
 
-      if (setStoredCountryData === data[1].country_name) return true;
-      console.log(setStoredCountryData, "Where is the country name");
-    });
-  }
+  //     if (setStoredCountryData === data[1].country_name) return true;
+  //     console.log(setStoredCountryData, "Where is the country name");
+  //   });
+  // }
 
   return (
     <>
@@ -111,7 +106,6 @@ function SavedCountries({ data }) {
       <p>Saved Countries {storedCountryData}</p>
 
       <form onSubmit={handleSubmit}>
-        
         <div id="container">
           <nav>
             <label>

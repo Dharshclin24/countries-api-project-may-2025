@@ -59,7 +59,7 @@ function CountryDetails({ data }) {
   if (!found) {
     return <div>Loading country details...</div>;
   }
-  
+
   //post request created to store data when user saves a country.
   async function oneSavedCountry() {
     await fetch("/api/save-one-country  ", {
@@ -73,6 +73,18 @@ function CountryDetails({ data }) {
       }),
     });
   }
+  let savedCountryObjects = [];
+
+  for (const savedCountryId of savedCountriesList) {
+    // Use find to efficiently locate the matching country object in 'data'
+    const foundCountry = data.find((country) => country.id === savedCountryId);
+
+    if (foundCountry) {
+      // Check if a country was actually found
+      savedCountryObjects.push(foundCountry);
+    }
+  }
+  // savedCountryObjects now holds the matched country objects
 
   // </script>
 
