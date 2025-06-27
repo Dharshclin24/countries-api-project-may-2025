@@ -98,12 +98,22 @@ function SavedCountries({ data }) {
   //     console.log(setStoredCountryData, "Where is the country name");
   //   });
   // }
+  const savedSet = new Set(savedCountriesList);
 
+const matchingCountries = data.filter(country =>
+  savedSet.has(country.name)
+);
   return (
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-      <p>Saved Countries {storedCountryData}</p>
+      <p>Saved Countries{} </p>
+      <div className="country-cards-grid">
+    {matchingCountries.map(country => (
+      <CountryCard key={country.name} country={country} />
+    ))}
+  </div>
+     
 
       <form onSubmit={handleSubmit}>
         <div id="container">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //import "../App.css";
 import { Link } from "react-router-dom";
+import SavedCountries from "./SavedCountries";
 
 function CountryDetails({ data }) {
   const countryName = useParams().countryName;
@@ -73,18 +74,6 @@ function CountryDetails({ data }) {
       }),
     });
   }
-  let savedCountryObjects = [];
-
-  for (const savedCountryId of savedCountriesList) {
-    // Use find to efficiently locate the matching country object in 'data'
-    const foundCountry = data.find((country) => country.id === savedCountryId);
-
-    if (foundCountry) {
-      // Check if a country was actually found
-      savedCountryObjects.push(foundCountry);
-    }
-  }
-  // savedCountryObjects now holds the matched country objects
 
   // </script>
 
@@ -95,7 +84,9 @@ function CountryDetails({ data }) {
           <nav>
             <h1>Welcome to the CountryDetails page</h1>
 
-            <button onClick={oneSavedCountry}>Saved countries</button>
+            <button className="save-button" onClick={oneSavedCountry}>
+            Save
+          </button>
             {found && (
               <ul>
                 <img src={found.flags.png} alt="country flags" id="imgCard" />
