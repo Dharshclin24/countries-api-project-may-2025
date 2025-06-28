@@ -11,6 +11,7 @@ function SavedCountries({ data }) {
   });
   const [gottenInfo, setGottenInfo] = useState(null);
   const [savedCountriesList, setSavedCountriesList] = useState([]);
+  const [savedSingleCountry, setSavedSingleCountry] = useState([]);
 
   //global variable declared to store (set mode function)and display data (render in jsx.not set variable)from the api
 
@@ -70,6 +71,19 @@ function SavedCountries({ data }) {
   };
 
   //get request created to retrieve a list of all saved countries.
+  async function storeSavedCountriesData() {
+    //POST response declared to save the saved contry data.
+    await fetch("/api/save-one-country", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+    {
+ "country_name": "countryName",
+  },
+    )};
+      }
 
   const allSavedCountries = async () => {
     try {
@@ -78,7 +92,13 @@ function SavedCountries({ data }) {
       const data = await response.json();
       console.log(data, "data from get new country");
 
-      setSavedCountriesList(data);
+      setSavedCountriesList(
+        data[0].name,
+        data[0].flags,
+        data[0].capital,
+        data[0].region
+      );
+      //console.log(setSavedCountriesList, "saved]);
       // console.log(setStoredCountryData, "storedCountryDataLabel");
     } catch (error) {
       console.error("Oopsies! Error fetching data:", error);
@@ -88,31 +108,30 @@ function SavedCountries({ data }) {
   useEffect(() => {
     allSavedCountries();
   }, []);
-  let retrievedCountryData;
-  // if (data) {
-  //   retrievedCountryData = data.find((item) => {
+ 
+  // storeSavedCountries//create post to store the saved
+  //  if (data) {
+  //    setSavedSingleCountry = data.find((item) => {
   //     console.log(item, "looking for item");
-  //     //console.log(retrievedCountryData, "label for retrievedcountryData info");
+  // //     //console.log(savedSingleCountry, "label for retrievedcountryData info");
 
-  //     if (setStoredCountryData === data[1].country_name) return true;
-  //     console.log(setStoredCountryData, "Where is the country name");
-  //   });
-  // }
-  const savedSet = new Set(savedCountriesList);
+  //      if (setStoredCountryData === data[1].country_name) return true;
+  // //     console.log(setStoredCountryData, "Where is the country name");
+     });
+   }
+  
 
-const matchingCountries = data.filter(country =>
-  savedSet.has(country.name)
-);
+
   return (
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-      <p>Saved Countries{} </p>
-      <div className="country-cards-grid">
+      <p>Saved Countries{store} </p>
+      {/* <div className="country-cards-grid">
     {matchingCountries.map(country => (
       <CountryCard key={country.name} country={country} />
     ))}
-  </div>
+  </div> */}
      
 
       <form onSubmit={handleSubmit}>
