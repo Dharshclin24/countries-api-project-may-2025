@@ -11,8 +11,6 @@ function SavedCountries({ data }) {
     bio: "",
   });
   const [gottenInfo, setGottenInfo] = useState(null);
-  
-  const [savedSingleCountry, setSavedSingleCountry] = useState([]);
 
   //global variable declared to store (set mode function)and display data (render in jsx.not set variable)from the api
 
@@ -72,22 +70,14 @@ function SavedCountries({ data }) {
   };
 
   //get request created to retrieve a list of all saved countries.
-  async function storeSavedCountriesData({data}) {
+  function AllCountriesDetails({countryCard }) {
+  const allCountriesNames = useParams().allCountriesNames;
+  
+  
     //POST response declared to save the saved contry data.
-    const countryNameList = useParams().countryNameList;
-    const [savedCountriesList, setSavedCountriesList] = useState([]);
-    await fetch("/api/save-one-country", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
 
-      body: JSON.stringify({
-        country_name: countryName,
-      }),
-    });
-
-    const allSavedCountries = async () => {
+    const AllSavedCountries = async () => {
+      const [savedCountriesList, setSavedCountriesList] = useState([]);
       try {
         const response = await fetch(`api/get-all-saved-countries`);
         //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
@@ -107,23 +97,48 @@ function SavedCountries({ data }) {
       }
     };
 
+    
+
+    // const [savedSingleCountry, setSavedSingleCountry] = useState([]);
+
+    // await fetch("/api/save-one-country", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+
+    //   body: JSON.stringify({
+    //     country_name: countryNameList,
+    //   }),
+    // });
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // }
+    // const countryDataList = await response.json();
+    // //console.log(countryData, "country data label");
+    //created to change the information that was gathered from the response of the api to json.
+  }
+
+    
     useEffect(() => {
-      allSavedCountries();
+      AllSavedCountries();
     }, []);
+    
 
     if (data) {
-      setSavedSingleCountry = data.find((item) => {
-        console.log(item, "looking for item");
+        data.find((item) => {
+        //console.log(item, "looking for item");
       });
-      //     //console.log(savedSingleCountry, "label for retrievedcountryData info");
+      //     //console.log(savedCountriesDataList, "label for saved countries data info");
     }
-  }
+  
 
   return (
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-      <button onClick={savedCountriesList}>Saved Countries</button>
+
+    
 
       <form onSubmit={handleSubmit}>
         <div id="container">

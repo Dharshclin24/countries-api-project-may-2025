@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //import "../App.css";
 import { Link } from "react-router-dom";
-import SavedCountries from "./SavedCountries";
 
 function CountryDetails({ data }) {
   const countryName = useParams().countryName;
@@ -38,6 +37,7 @@ function CountryDetails({ data }) {
   useEffect(() => {
     updateCount();
   }, [countryName]);
+  
 
   //find the object with selected country's details from data.
   //loop through all the counrties in data and find the country whose common name matches the countryname variable
@@ -61,19 +61,11 @@ function CountryDetails({ data }) {
     return <div>Loading country details...</div>;
   }
 
-  //post request created to store data when user saves a country.
-  async function oneSavedCountry() {
-    await fetch("/api/save-one-country  ", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      //request body
-      body: JSON.stringify({
-        country_name: countryName,
-      }),
-    });
-  }
+
+ 
+
+ 
+  
 
   // </script>
 
@@ -84,9 +76,7 @@ function CountryDetails({ data }) {
           <nav>
             <h1>Welcome to the CountryDetails page</h1>
 
-            <button className="save-button" onClick={oneSavedCountry}>
-            Save
-          </button>
+            <p>{count} Count Details</p>
             {found && (
               <ul>
                 <img src={found.flags.png} alt="country flags" id="imgCard" />
@@ -110,6 +100,6 @@ function CountryDetails({ data }) {
       </div>
     </>
   );
-}
 
+}
 export default CountryDetails;
