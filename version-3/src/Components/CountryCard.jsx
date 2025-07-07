@@ -1,6 +1,7 @@
 
 import React from "react";
 import "../App.css";
+import localData from "../../localData";
 
 export default function CountryCard({
   name,
