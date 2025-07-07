@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import React from "react";
- //import CountryCard from "..CountryCard/components/CountryCard";
+ import CountryCard from "../components/CountryCard";
 //import { useParams } from "react-router-dom";
 
-function SavedCountries({CountryCard, data }) {
+function SavedCountries({data}) {
   const [savedCountriesList, setSavedCountriesList] = useState([]);
   const [inputs, setInputs] = useState({
     username: "",

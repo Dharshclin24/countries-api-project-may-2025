@@ -46,7 +46,7 @@ export default function App() {
             </button>
 
             <button id="countrybutt">
-              <Link to="/countrydetails">CountryDetails</Link>
+              <Link to="/countryDetails">CountryDetails</Link>
             </button>
           </li>
         </ul>
