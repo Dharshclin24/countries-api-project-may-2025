@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
- import CountryCard from "../components/CountryCard";
+ //import CountryCard from "../components/CountryCard";
 //import { useParams } from "react-router-dom";
 
 function SavedCountries({data}) {
@@ -127,7 +127,7 @@ function SavedCountries({data}) {
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-      {/* <p>Saved Countries: {savedCountriesList}
+       <p>Saved Countries: {savedCountriesList}
       <CountryCard
               img={found.flags.png}
               name={found.name.common}
@@ -135,7 +135,7 @@ function SavedCountries({data}) {
               region={found.region}
               capital={foundcapital?.[0] || "N/A"}
             />
-            </p> */}
+            </p> 
       
       <div className="savedCountriesList">
         <h2>Saved Countries</h2>
