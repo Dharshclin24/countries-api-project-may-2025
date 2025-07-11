@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import React from "react";
- import CountryCard from "../components/CountryCard";
+// import CountryCard from "../components/CountryCard";
 //import { useParams } from "react-router-dom";
 
-function SavedCountries({data}) {
+function SavedCountries({ data }) {
   const [savedCountriesList, setSavedCountriesList] = useState([]);
   const [inputs, setInputs] = useState({
     username: "",
@@ -72,19 +72,14 @@ function SavedCountries({data}) {
 
   //get request created to retrieve a list of all saved countries.
 
-  const AllSavedCountries = async (CountryCard) => {
+  const AllSavedCountries = async () => {
     try {
       const response = await fetch(`api/get-all-saved-countries`);
       //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
       const data = await response.json();
       console.log(data, "data from get new country");
 
-      setSavedCountriesList(
-        data[0].name,
-        data[0].flags,
-        data[0].capital,
-        data[0].region
-      );
+      setSavedCountriesList(data);
       //console.log(setSavedCountriesList, "saved]);
       //  console.log(setStoredCountryData, "storedCountryDataLabel");
     } catch (error) {
@@ -120,58 +115,56 @@ function SavedCountries({data}) {
     data.find((item) => {
       //console.log(item, "looking for item");
     });
-        //console.log(savedCountriesDataList, "label for saved countries data info");
+    //console.log(savedCountriesDataList, "label for saved countries data info");
   }
 
   return (
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-        <p>Saved Countries: {savedCountriesList}
-      <CountryCard
+      <p>
+        {/* Saved Countries: {savedCountriesList} */}
+        {/* <CountryCard
               // img={found.flags.png}
               // name={found.name.common}
               // population={found.population}
               // region={found.region}
               // capital={foundcapital?.[0] || "N/A"}
-            />
-            </p> 
-       
+            /> */}
+      </p>
+
       <div className="savedCountriesList">
         <h2>Saved Countries</h2>
-        {savedCountriesList.length === 0 ? (
+        {savedCountriesList?.length === 0 ? (
           <p>None</p>
         ) : (
           <div className="countryCard">
-            {savedCountriesList.map((found) => (
-              <div key={found.id} className="country-card">
-                {found.flag && (
-                  <img
-                    src={found.flag}
-                    alt={`${found.name || country.country_name} flag`}
-                    className="flag"
-                  />
-                )}
-                <h3>{found.name || found.country_name}</h3>
-                <p>
-                  <strong>Capital:</strong> {found.capital || "N/A"}
-                </p>
-                <p>
-                  <strong>Population:</strong> {found.population || "N/A"}
-                </p>
-                <p>
-                  <strong>Region:</strong> {found.region || "N/A"}
-                </p>
-              </div>
+            {savedCountriesList?.map((found) => (
+              // <div key={found.id} className="country-card">
+              //   {found.flag && (
+              //     <img
+              //       src={found.flag}
+              //       alt={`${found.name || country.country_name} flag`}
+              //       className="flag"
+              //     />
+              //   )}
+              <h3 key={found.country_name}>
+                {found.country_name || found.country_name}
+              </h3>
+              //   <p>
+              //     <strong>Capital:</strong> {found.capital || "N/A"}
+              //   </p>
+              //   <p>
+              //     <strong>Population:</strong> {found.population || "N/A"}
+              //   </p>
+              //   <p>
+              //     <strong>Region:</strong> {found.region || "N/A"}
+              //   </p>
+              // </div>
             ))}
           </div>
         )}
       </div>
-    
-  
-      
-
-
 
       <form onSubmit={handleSubmit}>
         <div id="container">
