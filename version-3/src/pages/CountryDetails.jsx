@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //import "../App.css";
 import { Link } from "react-router-dom";
-
+//--------SECTION CREATED TO COUNT THE VIEWED COUNTRIES-------------------
 function CountryDetails({ data }) {
   const countryName = useParams().countryName;
   const [count, setCount] = useState(0);
@@ -37,7 +37,6 @@ function CountryDetails({ data }) {
   useEffect(() => {
     updateCount();
   }, [countryName]);
-  
 
   //find the object with selected country's details from data.
   //loop through all the counrties in data and find the country whose common name matches the countryname variable
@@ -61,13 +60,33 @@ function CountryDetails({ data }) {
     return <div>Loading country details...</div>;
   }
 
+  function countrySavedList() {
+    const saveCountryList = async () => {
+      try {
+        const response = await fetch("/api/save-one-country", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            country_name: countryName,
+          }),
+        });
+        const newData = await response.text();
 
- 
-
- 
-  
-
-  // </script>
+        if (!response.ok) {
+          alert("Failed to save country" + newData);
+          return;
+        }
+        console.log("SAVED TO BACKEND:", newData);
+        alert("Country saved!");
+      } catch (error) {
+        console.error("Save failed:", error.message);
+        alert("Error saving country. ");
+      }
+    };
+    saveCountryList();
+  }
 
   return (
     <>
@@ -75,6 +94,16 @@ function CountryDetails({ data }) {
         <Link to="/">
           <nav>
             <h1>Welcome to the CountryDetails page</h1>
+            <button className="back-button">&larr; Back</button>
+
+          <img
+            className="country-detail-flag"
+            src={found.flags.png}
+            alt={`${found.name.common} flag`}
+          />
+          <button className="save-button" onClick={countrySavedList}>
+            Save
+          </button>
 
             <p>{count} Count Details</p>
             {found && (
@@ -100,6 +129,5 @@ function CountryDetails({ data }) {
       </div>
     </>
   );
-
 }
 export default CountryDetails;

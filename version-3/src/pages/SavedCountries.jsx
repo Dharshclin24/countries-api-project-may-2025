@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import React from "react";
 // import CountryCard from "../components/CountryCard";
 //import { useParams } from "react-router-dom";
-
+//-----------SECTION FOR CREATED FORM DATA--------------------
 function SavedCountries({ data }) {
+  //local Variables declared to store  the form data.
   const [savedCountriesList, setSavedCountriesList] = useState([]);
   const [inputs, setInputs] = useState({
     username: "",
@@ -69,7 +70,7 @@ function SavedCountries({ data }) {
     event.preventDefault();
     storeFormData();
   };
-
+  //----------SECTION CREATED FOR THE SAVED COUNTRIES LIST-------------------
   //get request created to retrieve a list of all saved countries.
 
   const AllSavedCountries = async () => {
@@ -87,26 +88,6 @@ function SavedCountries({ data }) {
     }
   };
 
-  // async function nameOfCountry() {
-  //   const [savedSingleCountry, setSavedSingleCountry] = useState([]);
-  //   await fetch("/api/save-one-country", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-
-  //     body: JSON.stringify({
-  //       country_name: countryName,
-  //     }),
-  //   });
-  // //   if (!response.ok) {
-  //     throw new Error(`HTTP error! status: ${response.status}`);
-  //   }
-  //   const data = await response.json();
-  //   console.log(countryData, "country data label");
-  //   // created to change the information that was gathered from the response of the api to json.
-  // }
-
   useEffect(() => {
     AllSavedCountries();
   }, []);
@@ -122,45 +103,17 @@ function SavedCountries({ data }) {
     <>
       <h1>My Profile</h1>
       <p>Welcome {gottenInfo}</p>
-      <p>
-        {/* Saved Countries: {savedCountriesList} */}
-        {/* <CountryCard
-              // img={found.flags.png}
-              // name={found.name.common}
-              // population={found.population}
-              // region={found.region}
-              // capital={foundcapital?.[0] || "N/A"}
-            /> */}
-      </p>
 
       <div className="savedCountriesList">
         <h2>Saved Countries</h2>
         {savedCountriesList?.length === 0 ? (
-          <p>None</p>
+          <p>Saved Countries List</p>
         ) : (
           <div className="countryCard">
             {savedCountriesList?.map((found) => (
-              // <div key={found.id} className="country-card">
-              //   {found.flag && (
-              //     <img
-              //       src={found.flag}
-              //       alt={`${found.name || country.country_name} flag`}
-              //       className="flag"
-              //     />
-              //   )}
               <h3 key={found.country_name}>
                 {found.country_name || found.country_name}
               </h3>
-              //   <p>
-              //     <strong>Capital:</strong> {found.capital || "N/A"}
-              //   </p>
-              //   <p>
-              //     <strong>Population:</strong> {found.population || "N/A"}
-              //   </p>
-              //   <p>
-              //     <strong>Region:</strong> {found.region || "N/A"}
-              //   </p>
-              // </div>
             ))}
           </div>
         )}
