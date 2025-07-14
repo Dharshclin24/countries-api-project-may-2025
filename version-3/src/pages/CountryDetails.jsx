@@ -59,6 +59,7 @@ function CountryDetails({ data }) {
   if (!found) {
     return <div>Loading country details...</div>;
   }
+  //---------Function Created To Save Countries----------
 
   function countrySavedList() {
     const saveCountryList = async () => {
@@ -93,14 +94,14 @@ function CountryDetails({ data }) {
       <div>
         <Link to="/">
           <nav>
-            <h1>Welcome to the CountryDetails page</h1>
-            <button className="back-button">&larr; Back</button>
+             <h1>Welcome to the CountryDetails page</h1>
+             <button className="back-button">&larr; Back</button>
 
           <img
             className="country-detail-flag"
             src={found.flags.png}
             alt={`${found.name.common} flag`}
-          />
+          /> 
           <button className="save-button" onClick={countrySavedList}>
             Save
           </button>
