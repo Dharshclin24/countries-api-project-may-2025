@@ -44,6 +44,7 @@ async function getAllSavedCountriesInfo() {
 }
 async function saveOneCountry(newCountry) {
   await db.query("INSERT INTO saved_countries (country_name) VALUES ($1)", [
+    newCountry.country_name
 
  ]);
 }
@@ -86,7 +87,7 @@ app.post("/add-one-user", async (req, res) => {
     addOneUser(addedUser);
     res.send("The user was successfully added!");
   });
-  app.post(`/update-one-country-count`, async (req, res) => {
+  app.post("/update-one-country-count", async (req, res) => {
     const countryCounts = req.body;
     updateCountryCount(countryCounts);
     res.send("The country count was successfully updated!");
