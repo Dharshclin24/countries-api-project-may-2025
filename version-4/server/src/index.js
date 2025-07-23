@@ -31,11 +31,12 @@ async function getAllUsersInfo() {
   console.log(result);
   return result.rows;
 }
-async function getNewestUsersInfo(newestUserName) {
-  const result = await db.query("SELECT * FROM users WHERE name = $1", [
-    newestUserName,
-  ]);
-  return result.rows[0];
+async function getNewestUsersInfo() {
+  const result = await db.query(
+    "SELECT * FROM users ORDER BY user_id DESC LIMIT 1;"
+  );
+  console.log(result, "result", []);
+  return result.rows;
 }
 async function getAllSavedCountriesInfo() {
   const result = await db.query("SELECT * FROM saved_countries");
@@ -43,24 +44,19 @@ async function getAllSavedCountriesInfo() {
   return result.rows;
 }
 async function saveOneCountry(newCountry) {
-  await db.query("INSERT INTO saved_countries (country_name) VALUES ($1)", [
-    newCountry.country_name
-
- ]);
+  await db.query("INSERT INTO saved_countries (country_name) VALUES ($1);", [
+    newCountry.country_name,
+  ]);
 }
 async function addOneUser(addedUser) {
-    await db.query(
-      "INSERT INTO users (name) VALUES ($1)",
-      [addedUser.name]
-
-    );
-  }
-  async function updateCountryCount(countryCounts) {
-    await db.query(
-        "UPDATE countryCounts SET count = count + 1  WHERE country_name =  $1",
-        [countryCounts.country_name]
-    );
-  }
+  await db.query("INSERT INTO users (name) VALUES ($1)", [addedUser.name]);
+}
+async function updateCountryCount(countryCounts) {
+  await db.query(
+    "UPDATE countryCounts SET count = count + 1  WHERE country_name =  $1",
+    [countryCounts.country_name]
+  );
+}
 
 /*--------------------------------
 API ENDPOINTS
@@ -69,9 +65,15 @@ app.get("/get-all-users", async (req, res) => {
   const allUsers = await getAllUsersInfo();
   res.json(allUsers);
 });
+// app.get("/get-newest-user", async (req, res) => {
+//   const newestUserName = await getNewestUsersInfo();
+//   res.json(newestUserName);
+// });
 app.get("/get-newest-user", async (req, res) => {
-  const newestUserName = await getNewestUsersInfo();
-  res.json(newestUserName);
+  // declaring our GET API endpoint
+
+  const users = await getNewestUsersInfo(); // calling the helper function, and saving the data we get back in a variable
+  res.json(users); // sending the data back in the response
 });
 app.get("/get-all-saved-countries", async (req, res) => {
   const allSavedCountries = await getAllSavedCountriesInfo();
@@ -79,16 +81,16 @@ app.get("/get-all-saved-countries", async (req, res) => {
 });
 app.post("/save-one-country", async (req, res) => {
   const newCountry = req.body;
-  saveOneCountry(newCountry);
+   saveOneCountry(newCountry);
   res.send("The country was successfully saved!");
 });
 app.post("/add-one-user", async (req, res) => {
-    const addedUser = req.body;
-    addOneUser(addedUser);
-    res.send("The user was successfully added!");
-  });
-  app.post("/update-one-country-count", async (req, res) => {
-    const countryCounts = req.body;
-    updateCountryCount(countryCounts);
-    res.send("The country count was successfully updated!");
-  });
+  const addedUser = req.body;
+  addOneUser(addedUser);
+  res.send("The user was successfully added!");
+});
+app.post("/update-one-country-count", async (req, res) => {
+  const countryCounts = req.body;
+  updateCountryCount(countryCounts);
+  res.send("The country count was successfully updated!");
+});
