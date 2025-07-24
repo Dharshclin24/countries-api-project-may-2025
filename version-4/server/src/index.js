@@ -49,11 +49,14 @@ async function saveOneCountry(newCountry) {
   ]);
 }
 async function addOneUser(addedUser) {
-  await db.query("INSERT INTO users (name) VALUES ($1)", [addedUser.name]);
+  await db.query(
+    "INSERT INTO users (name, country_name, email, bio) VALUES ($1, $2, $3, $4);",
+    [addedUser.name, addedUser.country_name, addedUser.email, addedUser.bio]
+  );
 }
 async function updateCountryCount(countryCounts) {
   await db.query(
-    "UPDATE countryCounts SET count = count + 1  WHERE country_name =  $1",
+    "UPDATE country_counts SET count = count + 1  WHERE country_name =  $1",
     [countryCounts.country_name]
   );
 }
@@ -62,8 +65,12 @@ async function updateCountryCount(countryCounts) {
 API ENDPOINTS
 ---------------------------------*/
 app.get("/get-all-users", async (req, res) => {
-  const allUsers = await getAllUsersInfo();
-  res.json(allUsers);
+  try {
+    const allUsers = await getAllUsersInfo();
+    res.json(allUsers);
+  } catch (error) {
+    console.log(error);
+  }
 });
 // app.get("/get-newest-user", async (req, res) => {
 //   const newestUserName = await getNewestUsersInfo();
@@ -71,26 +78,45 @@ app.get("/get-all-users", async (req, res) => {
 // });
 app.get("/get-newest-user", async (req, res) => {
   // declaring our GET API endpoint
-
-  const users = await getNewestUsersInfo(); // calling the helper function, and saving the data we get back in a variable
-  res.json(users); // sending the data back in the response
+  try {
+    const users = await getNewestUsersInfo(); // calling the helper function, and saving the data we get back in a variable
+    res.json(users); // sending the data back in the response
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.get("/get-all-saved-countries", async (req, res) => {
-  const allSavedCountries = await getAllSavedCountriesInfo();
-  res.json(allSavedCountries);
+  try {
+    const allSavedCountries = await getAllSavedCountriesInfo();
+    res.json(allSavedCountries);
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.post("/save-one-country", async (req, res) => {
-  const newCountry = req.body;
-   saveOneCountry(newCountry);
-  res.send("The country was successfully saved!");
+  try {
+    const newCountry = req.body;
+    saveOneCountry(newCountry);
+    res.send("The country was successfully saved!");
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.post("/add-one-user", async (req, res) => {
-  const addedUser = req.body;
-  addOneUser(addedUser);
-  res.send("The user was successfully added!");
+  try {
+    const addedUser = req.body;
+    addOneUser(addedUser);
+    res.send("The user was successfully added!");
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.post("/update-one-country-count", async (req, res) => {
-  const countryCounts = req.body;
-  updateCountryCount(countryCounts);
-  res.send("The country count was successfully updated!");
+  try {
+    const countryCounts = req.body;
+    updateCountryCount(countryCounts);
+    res.send("The country count was successfully updated!");
+  } catch (error) {
+    console.log(error);
+  }
 });
