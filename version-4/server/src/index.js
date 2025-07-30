@@ -113,8 +113,8 @@ app.get("/get-all-saved-countries", async (req, res) => {
 app.post("/save-one-country", async (req, res) => {
   try {
     const newCountry = req.body;
-    saveOneCountry();
-    res.send(newCountry);
+    saveOneCountry(newCountry);
+    res.send("Success! The country is saved.");
   } catch (error) {
     console.log(error);
   }
