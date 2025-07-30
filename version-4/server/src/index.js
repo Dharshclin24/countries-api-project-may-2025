@@ -44,9 +44,10 @@ async function getAllSavedCountriesInfo() {
   return result.rows;
 }
 async function saveOneCountry(newCountry) {
-  await db.query("INSERT INTO saved_countries (country_name) VALUES ($1);", [
-    newCountry.country_name,
-  ]);
+  await db.query(
+    "INSERT INTO saved_countries (country_name) VALUES ($1) ON CONFLICT (country_name) DO NOTHING;",
+    [newCountry.country_name]
+  );
 }
 async function addOneUser(addedUser) {
   await db.query(

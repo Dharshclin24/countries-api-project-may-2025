@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // --- SECTION FOR USER FORM DATA & PROFILE ---
-function SavedCountries({allCountriesData }) {
+function SavedCountries({ allCountriesData }) {
   // State variables for form inputs and retrieved user information
   const [inputs, setInputs] = useState({
     username: "",
@@ -32,22 +32,11 @@ function SavedCountries({allCountriesData }) {
         },
         body: JSON.stringify({
           name: inputs.username,
-          preferred_country: inputs.country, // Renamed 'country' to 'preferred_country' for backend clarity if it's not a *saved* country
+          country_name: inputs.country, // Renamed 'country' to 'preferred_country' for backend clarity if it's not a *saved* country
           email: inputs.email,
           bio: inputs.bio,
         }),
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Failed to save user data: ${response.status} ${response.statusText} - ${errorText}`
-        );
-      }
-
-      const responseData = await response.json(); // Assuming your backend returns JSON on success
-      console.log("User data saved successfully:", responseData);
-      alert("Profile updated successfully!");
 
       // After successfully storing data, re-fetch the newest user to update the profile display
       getNewestUserData();
@@ -126,11 +115,11 @@ function SavedCountries({allCountriesData }) {
     fetchAllSavedCountries();
   }, []); // Empty dependency array means this runs once on mount
 
-  if (data) {
-    data.find((item) => {
-      //console.log(item, "looking for item");
-    });
-  }
+  // if (data) {
+  //   data.find((item) => {
+  //     //console.log(item, "looking for item");
+  //   });
+  // }
 
   return (
     <>
