@@ -55,15 +55,34 @@ async function addOneUser(addedUser) {
   );
 }
 async function updateCountryCount(countryCounts) {
-  await db.query(
-    "UPDATE country_counts SET count = count + 1  WHERE country_name =  $1",
+  const result = await db.query(
+    'INSERT INTO country_counts (country_name, count)  VALUES ($1, 1) ON CONFLICT (country_name) DO UPDATE SET count = country_counts.count + 1 RETURNING count AS "newCount";',
     [countryCounts.country_name]
   );
+  console.log(result, "result", []);
+  const newCountryCount = result.rows[0];
+  return newCountryCount;
+
+  // console.log(result, "RSSULT");
+  // const newCount = result.rows[0].newCount;
+  // console.log(newCount, "NEW COUNT");
+  // return {
+  //   newCount,
+  // };
 }
 
 /*--------------------------------
 API ENDPOINTS
 ---------------------------------*/
+app.post("/add-one-user", async (req, res) => {
+  try {
+    const addedUser = req.body;
+    addOneUser(addedUser);
+    res.send("The user was successfully added!");
+  } catch (error) {
+    console.log(error);
+  }
+});
 app.get("/get-all-users", async (req, res) => {
   try {
     const allUsers = await getAllUsersInfo();
@@ -72,10 +91,7 @@ app.get("/get-all-users", async (req, res) => {
     console.log(error);
   }
 });
-// app.get("/get-newest-user", async (req, res) => {
-//   const newestUserName = await getNewestUsersInfo();
-//   res.json(newestUserName);
-// });
+
 app.get("/get-newest-user", async (req, res) => {
   // declaring our GET API endpoint
   try {
@@ -96,27 +112,16 @@ app.get("/get-all-saved-countries", async (req, res) => {
 app.post("/save-one-country", async (req, res) => {
   try {
     const newCountry = req.body;
-    saveOneCountry(newCountry);
-    res.send("The country was successfully saved!");
+    saveOneCountry();
+    res.send(newCountry);
   } catch (error) {
     console.log(error);
   }
 });
-app.post("/add-one-user", async (req, res) => {
-  try {
-    const addedUser = req.body;
-    addOneUser(addedUser);
-    res.send("The user was successfully added!");
-  } catch (error) {
-    console.log(error);
-  }
-});
+
 app.post("/update-one-country-count", async (req, res) => {
-  try {
-    const countryCounts = req.body;
-    updateCountryCount(countryCounts);
-    res.send("The country count was successfully updated!");
-  } catch (error) {
-    console.log(error);
-  }
+  const countryCounts = req.body;
+  const savedCountData = await updateCountryCount(countryCounts);
+  // console.log(savedCountData, "Label for count data");
+  res.json(savedCountData);
 });
