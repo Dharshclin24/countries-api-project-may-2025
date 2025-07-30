@@ -60,7 +60,7 @@ export default function App() {
         />
         <Route
           path="/countryDetails/:countryName"
-          element={<CountryDetails data={gatheredApiInfo} />}
+          element={<CountryDetails allCountriesData={gatheredApiInfo} />}
         />
       </Routes>
     </div>

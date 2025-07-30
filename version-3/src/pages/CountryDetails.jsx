@@ -1,134 +1,124 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-//import "../App.css";
-import { Link } from "react-router-dom";
-//--------SECTION CREATED TO COUNT THE VIEWED COUNTRIES-------------------
+import { useParams, Link } from "react-router-dom"; // Link can be imported here directly
+
 function CountryDetails({ data }) {
-  const countryName = useParams().countryName;
-  const [count, setCount] = useState(0);
-  //function created to update the count of viewed  countries  when the user views a country.
-  //fetch created to gather viewed country data from the api.
-  const updateCount = async () => {
+  const { countryName } = useParams(); // Destructure directly for cleaner code
+  const [viewCount, setViewCount] = useState(0);
+
+  // Function to update the view count of the current country
+  const updateCountryViewCount = async () => {
     try {
       const response = await fetch("/api/update-one-country-count", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        //body of request count data to get the country name and json the data.
         body: JSON.stringify({
           country_name: countryName,
         }),
       });
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-        //if no response throw an error
+        // error message
+        throw new Error(
+          `HTTP error! Status: ${response.status} - ${response.statusText}`
+        );
       }
+
       const countryData = await response.json();
-      //console.log(countryData, "country data label");
-      //created to change the information that was gathered from the response of the api to json.
-      setCount(countryData.newCount);
-      //created to give the setCount function the value of countryData and new count
+      setViewCount(countryData.newCount); // Update the state with the new count
     } catch (error) {
-      console.error("Error updating count:", error);
+      console.error("Error updating view count:", error);
+      //  an error state here to display a message to the user
     }
   };
 
+  // useEffect to call updateCountryViewCount when the component mounts or countryName changes
   useEffect(() => {
-    updateCount();
-  }, [countryName]);
+    if (countryName) {
+      // Ensure countryName exists before making the API call
+      updateCountryViewCount();
+    }
+  }, [countryName]); // Dependency array: re-run effect if countryName changes
+  console.log(data);
+  console.log(countryName);
 
-  //find the object with selected country's details from data.
-  //loop through all the counrties in data and find the country whose common name matches the countryname variable
-  let found;
-  if (data) {
-    found = data.find((item) => {
-      //console.log(item, "looking for item");
-      //console.log(found, "label for found info");
-      console.log(countryName, "country name label");
-      //console.log(item.name.common, "item name label");
+  // Find the selected country's details from the 'data' prop
+  const foundCountry = data?.find((item) => item.name.common === countryName);
 
-      if (countryName === item.name.common) return true;
-
-      //console.log(countryName, "Where is the country name")
-    });
+  // Display a loading message if the country data is not yet found
+  if (!foundCountry) {
+    return <div>Loading country details or country not found...</div>;
   }
-  //console.log(countryName, "looking for country name");
-  //console.log(data);
-  //console.log(found, "looking for found");
-  if (!found) {
-    return <div>Loading country details...</div>;
-  }
-  //---------Function Created To Save Countries----------
 
-  function countrySavedList() {
-    const saveCountryList = async () => {
-      try {
-        const response = await fetch("/api/save-one-country", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            country_name: countryName,
-          }),
-        });
-        const newData = await response.text();
+  // Function to save the current country to a list
+  const saveCountryToList = async () => {
+    try {
+      const response = await fetch("/api/save-one-country", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          country_name: countryName,
+        }),
+      });
 
-        if (!response.ok) {
-          alert("Failed to save country" + newData);
-          return;
-        }
-        console.log("SAVED TO BACKEND:", newData);
-        alert("Country saved!");
-      } catch (error) {
-        console.error("Save failed:", error.message);
-        alert("Error saving country. ");
+      if (!response.ok) {
+        const errorData = await response.text(); // Get error message from backend
+        throw new Error(`Failed to save country: ${errorData}`);
       }
-    };
-    saveCountryList();
-  }
+
+      console.log("Country successfully saved!");
+      alert("Country saved successfully!");
+    } catch (error) {
+      console.error("Save country failed:", error.message);
+      alert(`Error saving country: ${error.message}`);
+    }
+  };
 
   return (
-    <>
-      <div>
+    <div>
+      {" "}
+      <nav>
+        {/* Link to home page */}
         <Link to="/">
-          <nav>
-             <h1>Welcome to the CountryDetails page</h1>
-             <button className="back-button">&larr; Back</button>
-
-          <img
-            className="country-detail-flag"
-            src={found.flags.png}
-            alt={`${found.name.common} flag`}
-          /> 
-          <button className="save-button" onClick={countrySavedList}>
-            Save
-          </button>
-
-            <p>{count} Count Details</p>
-            {found && (
-              <ul>
-                <img src={found.flags.png} alt="country flags" id="imgCard" />
-
-                <li id="nameCard2">
-                  <strong>Name</strong> {found.name.common}
-                </li>
-                <li id="popCard2">
-                  <strong>Poulation</strong> {found.population}
-                </li>
-                <li id="regionCard2">
-                  <strong>Region</strong> {found.region}
-                </li>
-                <li id="capDard2">
-                  <strong>Capital</strong> {found.capital}
-                </li>
-              </ul>
-            )}
-          </nav>
+          <h1>Back to Home</h1>
         </Link>
+      </nav>
+      <div className="country-details-container">
+        {" "}
+        <h2>{foundCountry.name.common}</h2> {/* Display country name  */}
+        <img
+          className="country-detail-flag"
+          src={foundCountry.flags.png}
+          alt={`${foundCountry.name.common} flag`}
+        />
+        <button className="save-button" onClick={saveCountryToList}>
+          Save Country
+        </button>
+        <p>View Count: {viewCount}</p> {/* Display the view count */}
+        <ul>
+          <li>
+            <strong>Official Name:</strong> {foundCountry.name.official}
+          </li>
+          <li>
+            <strong>Population:</strong>{" "}
+            {foundCountry.population.toLocaleString()}{" "}
+            {/* Format population for readability */}
+          </li>
+          <li>
+            <strong>Region:</strong> {foundCountry.region}
+          </li>
+          <li>
+            <strong>Capital:</strong>{" "}
+            {foundCountry.capital ? foundCountry.capital[0] : "N/A"}{" "}
+            {/* Handle cases where capital might be an array or missing */}
+          </li>
+        </ul>
       </div>
-    </>
+    </div>
   );
 }
+
 export default CountryDetails;

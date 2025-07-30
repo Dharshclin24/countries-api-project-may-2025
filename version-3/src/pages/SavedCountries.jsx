@@ -1,167 +1,245 @@
-import { useState, useEffect } from "react";
-import React from "react";
-// import CountryCard from "../components/CountryCard";
-//import { useParams } from "react-router-dom";
-//-----------SECTION FOR CREATED FORM DATA--------------------
-function SavedCountries({ data }) {
-  //local Variables declared to store  the form data.
-  const [savedCountriesList, setSavedCountriesList] = useState([]);
+import React, { useState, useEffect } from "react";
+
+// --- SECTION FOR USER FORM DATA & PROFILE ---
+function SavedCountries({allCountriesData }) {
+  // State variables for form inputs and retrieved user information
   const [inputs, setInputs] = useState({
     username: "",
     country: "",
     email: "",
     bio: "",
   });
-  const [gottenInfo, setGottenInfo] = useState(null);
+  const [newestUserInfo, setNewestUserInfo] = useState(null);
 
-  //global variable declared to store (set mode function)and display data (render in jsx.not set variable)from the api
+  // State variable for the list of saved countries
+  const [savedCountriesList, setSavedCountriesList] = useState([]);
+  const [loadingSavedCountries, setLoadingSavedCountries] = useState(true); // New loading state
+  const [errorSavedCountries, setErrorSavedCountries] = useState(null); // New error state
 
-  // //function defined to handle changes made to the form when user inputs data.
+  // Function to handle changes in form input fields
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   };
 
-  // //post request created to send the form data to the API.
-  async function storeFormData() {
-    await fetch("/api/add-one-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      //form data
-      body: JSON.stringify({
-        name: inputs.username,
-        country_name: inputs.country,
-        email: inputs.email,
-        bio: inputs.bio,
-      }),
-    });
-  }
-  const retrievedFormData = async () => {
+  // Function to send form data to the API (POST request)
+  const storeFormData = async () => {
+    try {
+      const response = await fetch("/api/add-one-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: inputs.username,
+          preferred_country: inputs.country, // Renamed 'country' to 'preferred_country' for backend clarity if it's not a *saved* country
+          email: inputs.email,
+          bio: inputs.bio,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to save user data: ${response.status} ${response.statusText} - ${errorText}`
+        );
+      }
+
+      const responseData = await response.json(); // Assuming your backend returns JSON on success
+      console.log("User data saved successfully:", responseData);
+      alert("Profile updated successfully!");
+
+      // After successfully storing data, re-fetch the newest user to update the profile display
+      getNewestUserData();
+    } catch (error) {
+      console.error("Error storing form data:", error);
+      alert(`Error updating profile: ${error.message}`);
+    }
+  };
+
+  // Function to retrieve the newest user's data from the API (GET request)
+  const getNewestUserData = async () => {
     try {
       const response = await fetch(`/api/get-newest-user`);
-      //created  a fetch to get the newest user information.Named the function retrieved form data
+      if (!response.ok) {
+        throw new Error(`Failed to fetch user data: ${response.status} .`);
+      }
       const data = await response.json();
-      //console.log(data, "data from get newest user");
-      //console.log(data[0].name, "new user name");
-
-      setGottenInfo(
-        data[0].name,
-        data[0].flags,
-        data[0].capital,
-        data[0].region
-      );
-      //console.log(setGottenInfo, "gotten info label");
-      //     //saved the api data into the state variable called gathered ApiInfo state variable and changed the value to data
-
-      //     //data is passed as props to the other pages for the information gathered.
+      // Assuming data is an array and you want the first item
+      if (data && data.length > 0) {
+        // Only set the relevant user info to state
+        setNewestUserInfo({
+          name: data[0].name,
+          email: data[0].email,
+          bio: data[0].bio,
+          // If you want to display country flag/capital from here,
+          // ensure your /api/get-newest-user endpoint provides that data,
+          // or fetch it separately based on data[0].country_name
+        });
+      } else {
+        setNewestUserInfo(null); // No user found
+      }
     } catch (error) {
-      console.error("Oopsies! Error fetching data:", error);
+      console.error("Error fetching newest user data:", error);
+      setNewestUserInfo(null); // Reset if error occurs
     }
   };
-  // run use effect on page load
-  useEffect(() => {
-    retrievedFormData();
-  }, []);
 
-  //function created to handle the form when the user submits it and prevent defaults.
+  // useEffect to fetch the newest user data when the component mounts
+  useEffect(() => {
+    getNewestUserData();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Function to handle form submission
   const handleSubmit = (event) => {
-    event.preventDefault();
-    storeFormData();
+    event.preventDefault(); // Prevent default form submission behavior (page reload)
+    storeFormData(); // Call the async function to store data
   };
-  //----------SECTION CREATED FOR THE SAVED COUNTRIES LIST-------------------
-  //get request created to retrieve a list of all saved countries.
 
-  const AllSavedCountries = async () => {
+  // --- SECTION FOR SAVED COUNTRIES LIST ---
+  // Function to retrieve all saved countries from the API (GET request)
+  const fetchAllSavedCountries = async () => {
+    setLoadingSavedCountries(true); // Set loading true before fetch
+    setErrorSavedCountries(null); // Clear previous errors
     try {
-      const response = await fetch(`api/get-all-saved-countries`);
-      //created  a fetch to Retrieve all saved country names..Named the function allSavedCountries
-      const data = await response.json();
-      console.log(data, "data from get new country");
+      const response = await fetch(`/api/get-all-saved-countries`);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch saved countries: ${response.status} ${response.statusText}`
+        );
+      }
+      const savedCountriesNames = await response.json();
+      console.log("Saved countries data:", savedCountriesNames); // More descriptive log
 
-      setSavedCountriesList(data);
-      //console.log(setSavedCountriesList, "saved]);
-      //  console.log(setStoredCountryData, "storedCountryDataLabel");
+      setSavedCountriesList(savedCountriesNames);
     } catch (error) {
-      console.error("Oopsies! Error fetching data:", error);
+      console.error("Error fetching saved countries:", error);
+      setErrorSavedCountries(error.message); // Set error message
+      setSavedCountriesList([]); // Clear list on error
+    } finally {
+      setLoadingSavedCountries(false); // Set loading false after fetch (success or error)
     }
   };
 
+  // useEffect to fetch all saved countries when the component mounts
   useEffect(() => {
-    AllSavedCountries();
-  }, []);
+    fetchAllSavedCountries();
+  }, []); // Empty dependency array means this runs once on mount
 
   if (data) {
     data.find((item) => {
       //console.log(item, "looking for item");
     });
-    //console.log(savedCountriesDataList, "label for saved countries data info");
+
+    // let newArray = data.filter(item => savedCountriesNames.includes(item)); 
+//     let filteredArray = mainArray
+//     .filter(item => filterArray
+//         .map(x => x.id)
+//         .includes(item.id));
+// console.log(filteredArray);
   }
 
   return (
     <>
       <h1>My Profile</h1>
-      <p>Welcome {gottenInfo}</p>
-
-      <div className="savedCountriesList">
-        <h2>Saved Countries</h2>
-        {savedCountriesList?.length === 0 ? (
-          <p>Saved Countries List</p>
+      {/* Display user's basic info */}
+      <div className="user-profile-info">
+        {newestUserInfo ? (
+          <p>
+            Welcome, <strong>{newestUserInfo.name}</strong>!
+            <br />
+            Email: {newestUserInfo.email}
+            <br />
+            Bio: {newestUserInfo.bio}
+          </p>
         ) : (
-          <div className="countryCard">
-            {savedCountriesList?.map((found) => (
-              <h3 key={found.country_name}>
-                {found.country_name || found.country_name}
-              </h3>
-            ))}
-          </div>
+          <p>Please complete your profile below.</p>
         )}
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <div id="container">
-          <nav>
+      <hr /> {/* Horizontal rule for separation */}
+      {/* Form for updating user profile */}
+      <div className="profile-form-container">
+        <h2>Update Your Profile</h2>
+        <form onSubmit={handleSubmit}>
+          <div id="containerForm">
+            {" "}
             <label>
-              Full Name
+              Full Name:
               <input
                 type="text"
                 name="username"
-                value={inputs?.username || ""}
+                value={inputs.username}
                 onChange={handleChange}
+                placeholder="Enter your full name"
               />
             </label>
             <label>
               Email:
               <input
-                type="text"
+                type="email"
                 name="email"
-                value={inputs?.email || ""}
+                value={inputs.email}
                 onChange={handleChange}
+                placeholder="Enter your email"
               />
             </label>
             <label>
-              Country
+              Preferred Country (e.g., for profile):
               <input
                 type="text"
                 name="country"
-                value={inputs?.country || ""}
+                value={inputs.country}
                 onChange={handleChange}
+                placeholder="Your favorite country"
               />
             </label>
             <label>
-              Bio
-              <input
-                type="text"
+              Bio:
+              <textarea
                 name="bio"
-                value={inputs?.bio || ""}
+                value={inputs.bio}
                 onChange={handleChange}
+                placeholder="Tell us about yourself"
               />
             </label>
-            <input type="submit" />
-          </nav>
-        </div>
-      </form>
+            <button type="submit">Save Profile</button>{" "}
+          </div>
+        </form>
+      </div>
+      <hr />
+      {/* Display Saved Countries List */}
+      <div className="saved-countries-section">
+        <h2>Your Saved Countries</h2>
+        {loadingSavedCountries ? (
+          <p>Loading saved countries...</p>
+        ) : errorSavedCountries ? (
+          <p className="error-message">Error: {errorSavedCountries}</p>
+        ) : savedCountriesList.length === 0 ? (
+          <p>You haven't saved any countries yet. Go explore!</p>
+        ) : (
+          <div className="country-cards-grid">
+            {" "}
+            {/* Consider grid for displaying cards */}
+            {savedCountriesList.map((country, index) => (
+              // Assuming 'country' object has 'country_name' and potentially other details
+              <div
+                key={country.country_name || index}
+                className="saved-country-card"
+              >
+                <h3>{country.country_name}</h3>
+
+                {
+                  <img
+                    src={country.flag_url}
+                    alt={`${country.country_name} flag`}
+                  />
+                }
+                {<p>Capital: {country.capital}</p>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }

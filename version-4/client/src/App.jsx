@@ -56,7 +56,7 @@ export default function App() {
         <Route path="/" element={<Home data={gatheredApiInfo} />} />
         <Route
           path="/savedCountries"
-          element={<SavedCountries data={gatheredApiInfo} />}
+          element={<SavedCountries allCountriesData={gatheredApiInfo} />}
         />
         <Route
           path="/countryDetails/:countryName"
