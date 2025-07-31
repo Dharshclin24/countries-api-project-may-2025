@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CountryCard from "../Components/CountryCard";
 
 // --- SECTION FOR USER FORM DATA & PROFILE ---
 function SavedCountries({ allCountriesData }) {
@@ -99,8 +100,19 @@ function SavedCountries({ allCountriesData }) {
       }
       const savedCountriesNames = await response.json();
       console.log("Saved countries data:", savedCountriesNames); // More descriptive log
+      //filter loop through all countries data. Create an array with the saved countries from the filter loop. create an if statement for the saved countries. 3 different arrays
 
-      setSavedCountriesList(savedCountriesNames);
+      let filteredArray = [];
+      for (let item of allCountriesData) {
+        if (
+          savedCountriesNames.some((savedCountryName) => {
+            return savedCountryName.country_name === item.name.common;
+          })
+        )
+          filteredArray.push(item);
+      }
+
+      setSavedCountriesList(filteredArray);
     } catch (error) {
       console.error("Error fetching saved countries:", error);
       setErrorSavedCountries(error.message); // Set error message
@@ -208,15 +220,7 @@ function SavedCountries({ allCountriesData }) {
                 key={country.country_name || index}
                 className="saved-country-card"
               >
-                <h3>{country.country_name}</h3>
-
-                {
-                  <img
-                    src={country.flag_url}
-                    alt={`${country.country_name} flag`}
-                  />
-                }
-                {<p>Capital: {country.capital}</p>}
+                <CountryCard country={country}></CountryCard>
               </div>
             ))}
           </div>

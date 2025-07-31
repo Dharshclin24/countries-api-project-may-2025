@@ -44,10 +44,6 @@ export default function App() {
               {" "}
               <Link to="/savedCountries">SavedCountries</Link>
             </button>
-
-            <button id="countrybutt">
-              <Link to="/countryDetails">CountryDetails</Link>
-            </button>
           </li>
         </ul>
       </nav>
