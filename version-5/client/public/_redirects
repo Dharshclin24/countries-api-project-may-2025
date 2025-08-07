@@ -1,4 +1,4 @@
- /api/* https://backend-answer-keys.onrender.com/:splat 200
-
- /* /index.html 200
+ /api/* https://countries-api-project-may-2025-wt0r.onrender.com/:splat 200
+ /\* /index.html 404
+/* /index.html 200
  

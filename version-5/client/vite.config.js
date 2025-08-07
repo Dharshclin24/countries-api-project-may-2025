@@ -7,7 +7,7 @@
    server: {
      proxy: {
        "/api": {
-         target: "http://localhost:3000/",
+         target: "https://countries-api-project-may-2025-wt0r.onrender.com",
          changeOrigin: true,
          secure: false,
          rewrite: (path) => path.replace(/^\/api/, ""),
