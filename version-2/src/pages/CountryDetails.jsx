@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useParams } from "react-router";
 function CountryDetails({ data }) {
   //got the parameter from the url
   //countryName is the name of the country the user selected
   const countryName = useParams().countryName;
+  const [viewCount, setViewCount] = useState(0);
   //find the object with selected country's details from data.
   //loop through all the counrties in data and find the country whose common name matches the countryname variable
   let found = data.find((item) => {
@@ -13,7 +15,13 @@ function CountryDetails({ data }) {
   //console.log(data);
   console.log(found);
   if (!found) {
-    return <div>Loading country details... or Country not found.</div>;
+    return <div className="loading details"> Country not found.</div>;
+    const viewCount = JSON.parse(localStorage.getItem("viewCounts")) || {};
+    const currentViews = viewCounts[found.name.common] || 0;
+    const newViews = currentViews + 1;
+    viewCounts[found.name.common] = newViews;
+    localStorage.setItem("viewCounts", JSON.stringify(viewCounts));
+    setViewCount(newViews);
   }
   return (
     <>
